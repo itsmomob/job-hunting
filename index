@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monica's Job Match — Personal Career Assistant</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ---------- GLOBAL RESET & VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-secondary: #131a24;
+            --bg-card: #1a2533;
+            --bg-input: #0f1722;
+            --border-color: #2a3a4f;
+            --text-primary: #e8edf2;
+            --text-secondary: #94a9c5;
+            --text-muted: #5a7a9a;
+            --accent-cyan: #00d4ff;
+            --accent-blue: #3b82f6;
+            --accent-green: #22d68c;
+            --accent-amber: #f59e0b;
+            --accent-red: #ef4444;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --radius: 12px;
+            --transition: 0.25s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-cyan);
+        }
+
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 24px 40px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .app-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 16px 0 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo i {
+            font-size: 28px;
+            color: var(--accent-cyan);
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+        }
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo span {
+            font-size: 13px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            -webkit-text-fill-color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .header-actions button {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-actions button:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+            background: var(--bg-input);
+        }
+        .header-actions button.active {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+        }
+        .header-actions button i {
+            font-size: 14px;
+        }
+
+        /* ---------- SECTION PAGES ---------- */
+        .page {
+            display: none;
+            animation: fadeIn 0.35s ease;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ---------- CARDS ---------- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .card-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card-header h2 i {
+            color: var(--accent-cyan);
+            font-size: 18px;
+        }
+        .card-header .badge {
+            background: var(--bg-input);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ---------- FORM ELEMENTS ---------- */
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: var(--transition);
+            outline: none;
+        }
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.12);
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: var(--text-muted);
+        }
+        textarea {
+            min-height: 160px;
+            resize: vertical;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            color: #0b0e14;
+        }
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25);
+        }
+        .btn-secondary {
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-primary);
+        }
+        .btn-success {
+            background: var(--accent-green);
+            color: #0b0e14;
+        }
+        .btn-success:hover {
+            box-shadow: 0 0 30px rgba(34, 214, 140, 0.25);
+            transform: scale(1.02);
+        }
+        .btn-danger {
+            background: var(--accent-red);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.25);
+        }
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-cyan);
+            color: var(--text-primary);
+        }
+
+        /* ---------- TAGS / SKILLS ---------- */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px 0 4px;
+        }
+        .tag {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 4px 14px 4px 16px;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            color: var(--text-secondary);
+        }
+        .tag .remove-tag {
+            cursor: pointer;
+            color: var(--text-muted);
+            font-size: 12px;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            padding: 0 2px;
+        }
+        .tag .remove-tag:hover {
+            color: var(--accent-red);
+        }
+        .tag.highlight {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.06);
+        }
+        .tag.match {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            background: rgba(34, 214, 140, 0.06);
+        }
+        .tag.mismatch {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.06);
+        }
+
+        .add-tag-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .add-tag-area input {
+            flex: 1;
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+        .add-tag-area button {
+            padding: 8px 18px;
+            white-space: nowrap;
+        }
+
+        /* ---------- MATCH RESULTS ---------- */
+        .match-score {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding: 12px 0 8px;
+        }
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            border: 4px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .score-circle.high {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+        .score-circle.medium {
+            border-color: var(--accent-amber);
+            color: var(--accent-amber);
+        }
+        .score-circle.low {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .match-details {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px 24px;
+            font-size: 14px;
+        }
+        .match-details .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .match-details .detail-item .label {
+            color: var(--text-secondary);
+        }
+        .match-details .detail-item .value {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .match-details .detail-item .value.good {
+            color: var(--accent-green);
+        }
+        .match-details .detail-item .value.ok {
+            color: var(--accent-amber);
+        }
+        .match-details .detail-item .value.bad {
+            color: var(--accent-red);
+        }
+
+        /* ---------- COVER LETTER ---------- */
+        .cover-letter-box {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px 24px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.8;
+            max-height: 420px;
+            overflow-y: auto;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin-top: 12px;
+        }
+        .cover-letter-box .letter-placeholder {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ---------- JOB HISTORY TABLE ---------- */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            background: var(--bg-input);
+            text-align: left;
+            padding: 12px 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-badge.applied {
+            background: rgba(34, 214, 140, 0.15);
+            color: var(--accent-green);
+        }
+        .status-badge.not-applied {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-amber);
+        }
+        .status-badge.rejected {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+        }
+        .status-badge.interview {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .job-title-cell {
+            font-weight: 500;
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .job-actions-cell {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- EMPTY STATE ---------- */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .app-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .header-actions {
+                justify-content: stretch;
+            }
+            .header-actions button {
+                flex: 1;
+                justify-content: center;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .match-details {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 18px 16px;
+            }
+            .match-score {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .score-circle {
+                width: 64px;
+                height: 64px;
+                font-size: 22px;
+            }
+            .job-actions-cell {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 12px 12px 30px;
+            }
+            .logo h1 {
+                font-size: 18px;
+            }
+            .card-header h2 {
+                font-size: 16px;
+            }
+            .btn {
+                padding: 8px 18px;
+                font-size: 13px;
+            }
+            .cover-letter-box {
+                font-size: 13px;
+                padding: 16px;
+            }
+        }
+
+        /* ---------- UTILITY ---------- */
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-12 {
+            margin-top: 12px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .text-sm {
+            font-size: 13px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* ---------- TOAST ---------- */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        .toast i {
+            font-size: 18px;
+            color: var(--accent-cyan);
+        }
+        .toast .toast-msg {
+            font-size: 14px;
+            flex: 1;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 4px;
+        }
+        .toast .toast-close:hover {
+            color: var(--text-primary);
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ========== HEADER ========== -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-user-circle"></i>
+                <h1>Monica's Job Match <span>v2.0</span></h1>
+            </div>
+            <div class="header-actions" id="navButtons">
+                <button class="active" data-page="profile"><i class="fas fa-id-badge"></i> Profile</button>
+                <button data-page="matcher"><i class="fas fa-search"></i> Matcher</button>
+                <button data-page="history"><i class="fas fa-history"></i> History</button>
+                <button id="exportDataBtn" title="Export all data as JSON"><i class="fas fa-file-export"></i> Export</button>
+                <button id="importDataBtn" title="Import data from JSON"><i class="fas fa-file-import"></i> Import</button>
+            </div>
+        </header>
+
+        <!-- ========== PAGE: PROFILE ========== -->
+        <section id="page-profile" class="page active">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user"></i> Personal Profile</h2>
+                    <span class="badge"><i class="far fa-save"></i> Auto-saved</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input id="profileName" type="text" placeholder="e.g. Monica Bernasconi" />
+                    </div>
+                    <div class="form-group">
+                        <label>Current Title / Role</label>
+                        <input id="profileTitle" type="text" placeholder="e.g. Intercultural Communication Specialist" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Professional Summary</label>
+                    <textarea id="profileSummary" rows="4" placeholder="Brief summary of your professional background..."></textarea>
+                </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-code"></i> Skills</h2>
+                </div>
+                <div class="tags-container" id="skillsContainer"></div>
+                <div class="add-tag-area">
+                    <input id="skillInput" type="text" placeholder="Add a skill…" />
+                    <button class="btn btn-secondary btn-sm" id="addSkillBtn"><i class="fas fa-plus"></i> Add</button>
+                </div>
+            </div>
+
+            <!-- Tools -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-tools"></i> Tools &amp; Technologies</h2>
+                </div>
+                <div class="tags-container" id="toolsContainer"></div>
+                <div class="add-tag-area">
+                    <input id="toolInput" type="text" placeholder="Add a tool or tech…" />
+                    <button class="btn btn-secondary btn-sm" id="addToolBtn"><i class="fas fa-plus"></i> Add</button>
+                </div>
+            </div>
+
+            <!-- Experience -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-briefcase"></i> Experience</h2>
+                </div>
+                <div class="form-group">
+                    <label>Key Experiences (one per line)</label>
+                    <textarea id="profileExperience" rows="6" placeholder="e.g.&#10;European Parliament — Communication Trainee (Luxembourg, 2024-2025)"></textarea>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Education & Languages</h2>
+                </div>
+                <div class="form-group">
+                    <label>Education & Certifications (one per line)</label>
+                    <textarea id="profileEducation" rows="4" placeholder="e.g.&#10;Master's in International Communication – University of Milan"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: MATCHER ========== -->
+        <section id="page-matcher" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-alt"></i> Paste Job Description</h2>
+                    <span class="badge"><i class="fas fa-robot"></i> AI-powered matching</span>
+                </div>
+                <div class="form-group">
+                    <label>Job Description</label>
+                    <textarea id="jobDescription" rows="6" placeholder="Paste the full job description here..."></textarea>
+                </div>
+                <div class="flex flex-between gap-8">
+                    <button class="btn btn-primary" id="analyzeBtn"><i class="fas fa-bolt"></i> Analyze Match</button>
+                    <button class="btn btn-secondary" id="clearJobBtn"><i class="fas fa-undo"></i> Clear</button>
+                </div>
+            </div>
+
+            <!-- Match Results -->
+            <div id="matchResults" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-pie"></i> Match Analysis</h2>
+                    <span class="badge" id="matchDateBadge"></span>
+                </div>
+                <div class="match-score" id="matchScoreArea">
+                    <div class="score-circle" id="scoreCircle">0%</div>
+                    <div class="match-details" id="matchDetails">
+                        <div class="detail-item"><span class="label">Skills matched</span><span class="value" id="skillsMatched">0 / 0</span></div>
+                        <div class="detail-item"><span class="label">Tools matched</span><span class="value" id="toolsMatched">0 / 0</span></div>
+                        <div class="detail-item"><span class="label">Experience fit</span><span class="value" id="experienceFit">—</span></div>
+                        <div class="detail-item"><span class="label">Overall match</span><span class="value" id="overallMatch">—</span></div>
+                    </div>
+                </div>
+                <div class="mt-8">
+                    <label>Matched Skills</label>
+                    <div class="tags-container" id="matchedSkillsContainer"></div>
+                </div>
+                <div class="mt-8">
+                    <label>Missing Skills</label>
+                    <div class="tags-container" id="missingSkillsContainer"></div>
+                </div>
+                <div class="mt-8">
+                    <label>Matched Tools</label>
+                    <div class="tags-container" id="matchedToolsContainer"></div>
+                </div>
+                <div class="mt-8">
+                    <label>Missing Tools</label>
+                    <div class="tags-container" id="missingToolsContainer"></div>
+                </div>
+            </div>
+
+            <!-- Cover Letter -->
+            <div id="coverLetterSection" class="card hidden">
+                <div class="card-header">
+                    <h2><i class="fas fa-envelope"></i> Tailored Cover Letter</h2>
+                    <div>
+                        <button class="btn btn-secondary btn-sm" id="copyLetterBtn"><i class="fas fa-copy"></i> Copy</button>
+                        <button class="btn btn-success btn-sm" id="saveJobBtn"><i class="fas fa-check"></i> Save to History</button>
+                    </div>
+                </div>
+                <div class="cover-letter-box" id="coverLetterBox">
+                    <span class="letter-placeholder">Your tailored cover letter will appear here after analysis.</span>
+                </div>
+                <div class="mt-8 flex gap-8" id="letterActions">
+                    <button class="btn btn-secondary btn-sm" id="regenerateLetterBtn"><i class="fas fa-sync"></i> Regenerate</button>
+                    <button class="btn btn-secondary btn-sm" id="markAppliedBtn"><i class="fas fa-check-circle"></i> Mark as Applied</button>
+                    <button class="btn btn-secondary btn-sm" id="markNotAppliedBtn"><i class="fas fa-times-circle"></i> Mark as Not Applied</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: HISTORY ========== -->
+        <section id="page-history" class="page">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-list-ul"></i> Job Application History</h2>
+                    <div>
+                        <button class="btn btn-secondary btn-sm" id="clearHistoryBtn"><i class="fas fa-trash"></i> Clear All</button>
+                    </div>
+                </div>
+                <div id="historyContainer">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No jobs analyzed yet. Go to the <strong>Matcher</strong> tab and analyze a job to get started.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== HIDDEN FILE INPUT FOR IMPORT ========== -->
+        <input type="file" id="importFileInput" accept=".json" style="display:none" />
+    </div>
+
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ===================================================================
+        //  STATE — pre-populated with Monica's complete profile
+        // ===================================================================
+        const STATE_KEY = 'jobmatch_state_monica';
+
+        const defaultState = {
+            profile: {
+                name: "Monica Bernasconi",
+                title: "Intercultural Communication & Brand Strategy Specialist",
+                summary: "Passionate about international communication, brand storytelling, and cross-cultural mediation. Experienced in institutional communication at the European Parliament, community management in Seoul, and freelance brand strategy. Strong background in languages (EN, ES, KO, FR) and creative problem-solving. I don't like executing—I like thinking. I sit with the problem, walk it off, consult with people who know more, and build something clear, human, and scalable.",
+                skills: [
+                    "International Communication",
+                    "UI/UX Consultancy",
+                    "Brand Strategy & Storytelling",
+                    "Content Architecture",
+                    "Project Management",
+                    "Editorial Management",
+                    "Translation & Interpretation (EN/IT/ES)",
+                    "Public Speaking",
+                    "Cross-Cultural Mediation",
+                    "Stakeholder Relations",
+                    "Institutional Communication",
+                    "Digital Strategy",
+                    "Research & Narrative Analysis",
+                    "Community Management",
+                    "Creative Direction"
+                ],
+                tools: [
+                    "HTML",
+                    "CSS",
+                    "JavaScript (basic)",
+                    "AppsScript",
+                    "Excel (advanced)",
+                    "Google Suite",
+                    "Microsoft Office",
+                    "Canva (advanced)",
+                    "Figma (basic)",
+                    "WordPress",
+                    "CapCut",
+                    "Meta Business Suite",
+                    "Naver",
+                    "GitHub",
+                    "Web Analytics",
+                    "Generative AI"
+                ],
+                experience: [
+                    "European Parliament — Communication Trainee (Luxembourg, 2024-2025): Website content management, UI/UX consultancy for IATE 3 (all suggestions implemented), designed file management system, automated Excel workflows, copyright compliance.",
+                    "Langsyoung — Marketing & Community Manager (Seoul, 2025-2026): Social media management, content creation, debating sessions design, participant relations, created custom flashcard system (HTML/CSS/JS).",
+                    "Freelance Creative Director & Brand Strategist (2023–present): Clients include HanaBee (brand identity, packaging, Instagram strategy), Restaurant Magazine (bilingual magazines), Pilates Studio (copywriting).",
+                    "AIESEC — IR Manager (2020-2021): International relations, stakeholder management.",
+                    "Il Polo Positivo — Social Media Team Leader (2017-2023): Grew Instagram from 0 to 4k followers, content strategy, editorial planning.",
+                    "Cactus Magazine — Creative Officer (2023): Creative direction, editorial strategy, writing, translation, collaboration with art director.",
+                    "Interpreter — Nuova Fapam (2022-2024): EN/IT interpretation for masterclasses and international events."
+                ],
+                education: [
+                    "Master's in Languages and Cultures for International Communication and Cooperation — University of Milan (2021-2023), Thesis on Korean pop culture media analysis.",
+                    "Bachelor's in Interlingual Mediation — University of Genoa (2018-2021), Thesis on translation EN>IT.",
+                    "Digital Marketing Specialization — FORMAPER & Chamber of Commerce of Milan (2023-2024).",
+                    "Languages: Italian (Native), English (C2), Spanish (C1), French (B1), Korean (B1, TOPIK 3)."
+                ]
+            },
+            history: [],
+            lastAnalysis: null
+        };
+
+        let state = {};
+
+        // ===================================================================
+        //  DOM REFS
+        // ===================================================================
+        const $ = (sel) => document.querySelector(sel);
+        const $$ = (sel) => document.querySelectorAll(sel);
+
+        const pages = {
+            profile: $('#page-profile'),
+            matcher: $('#page-matcher'),
+            history: $('#page-history'),
+        };
+
+        const navBtns = $$('#navButtons button[data-page]');
+
+        const profileName = $('#profileName');
+        const profileTitle = $('#profileTitle');
+        const profileSummary = $('#profileSummary');
+        const profileExperience = $('#profileExperience');
+        const profileEducation = $('#profileEducation');
+        const skillsContainer = $('#skillsContainer');
+        const toolsContainer = $('#toolsContainer');
+        const skillInput = $('#skillInput');
+        const toolInput = $('#toolInput');
+        const addSkillBtn = $('#addSkillBtn');
+        const addToolBtn = $('#addToolBtn');
+
+        const jobDescription = $('#jobDescription');
+        const analyzeBtn = $('#analyzeBtn');
+        const clearJobBtn = $('#clearJobBtn');
+        const matchResults = $('#matchResults');
+        const coverLetterSection = $('#coverLetterSection');
+        const scoreCircle = $('#scoreCircle');
+        const skillsMatchedEl = $('#skillsMatched');
+        const toolsMatchedEl = $('#toolsMatched');
+        const experienceFit = $('#experienceFit');
+        const overallMatch = $('#overallMatch');
+        const matchedSkillsContainer = $('#matchedSkillsContainer');
+        const missingSkillsContainer = $('#missingSkillsContainer');
+        const matchedToolsContainer = $('#matchedToolsContainer');
+        const missingToolsContainer = $('#missingToolsContainer');
+        const coverLetterBox = $('#coverLetterBox');
+        const matchDateBadge = $('#matchDateBadge');
+        const copyLetterBtn = $('#copyLetterBtn');
+        const saveJobBtn = $('#saveJobBtn');
+        const regenerateLetterBtn = $('#regenerateLetterBtn');
+        const markAppliedBtn = $('#markAppliedBtn');
+        const markNotAppliedBtn = $('#markNotAppliedBtn');
+
+        const historyContainer = $('#historyContainer');
+        const clearHistoryBtn = $('#clearHistoryBtn');
+
+        const exportDataBtn = $('#exportDataBtn');
+        const importDataBtn = $('#importDataBtn');
+        const importFileInput = $('#importFileInput');
+
+        const toastContainer = $('#toastContainer');
+
+        // ===================================================================
+        //  HELPERS
+        // ===================================================================
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+        }
+
+        function formatDate(d) {
+            return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function formatDateFull(d) {
+            return new Date(d).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit',
+                minute: '2-digit' });
+        }
+
+        function getMatchLevel(score) {
+            if (score >= 70) return 'high';
+            if (score >= 40) return 'medium';
+            return 'low';
+        }
+
+        function getMatchLabel(score) {
+            if (score >= 70) return 'Strong Match';
+            if (score >= 40) return 'Moderate Match';
+            return 'Weak Match';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function showToast(msg, icon = 'fa-info-circle') {
+            const div = document.createElement('div');
+            div.className = 'toast fade-in';
+            div.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span class="toast-msg">${escapeHtml(msg)}</span>
+                <button class="toast-close">&times;</button>
+            `;
+            div.querySelector('.toast-close').addEventListener('click', () => div.remove());
+            toastContainer.appendChild(div);
+            setTimeout(() => { if (div.parentNode) div.remove(); }, 5000);
+        }
+
+        // ===================================================================
+        //  PERSISTENCE
+        // ===================================================================
+        function saveState() {
+            try {
+                localStorage.setItem(STATE_KEY, JSON.stringify(state));
+            } catch (e) { /* ignore */ }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STATE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    // Ensure all fields exist
+                    if (parsed.profile && parsed.history !== undefined) {
+                        state = parsed;
+                        return true;
+                    }
+                }
+            } catch (e) { /* ignore */ }
+            return false;
+        }
+
+        function resetToDefaults() {
+            state = JSON.parse(JSON.stringify(defaultState));
+            saveState();
+        }
+
+        // ===================================================================
+        //  RENDER: PROFILE
+        // ===================================================================
+        function renderProfile() {
+            const p = state.profile;
+            profileName.value = p.name || '';
+            profileTitle.value = p.title || '';
+            profileSummary.value = p.summary || '';
+            profileExperience.value = (p.experience || []).join('\n');
+            profileEducation.value = (p.education || []).join('\n');
+
+            renderTags(skillsContainer, p.skills || [], 'skill');
+            renderTags(toolsContainer, p.tools || [], 'tool');
+        }
+
+        function renderTags(container, items, type) {
+            container.innerHTML = items.map((item, idx) => `
+                <span class="tag">
+                    ${escapeHtml(item)}
+                    <button class="remove-tag" data-type="${type}" data-index="${idx}">&times;</button>
+                </span>
+            `).join('');
+
+            container.querySelectorAll('.remove-tag').forEach((btn) => {
+                btn.addEventListener('click', (e) => {
+                    const t = btn.dataset.type;
+                    const idx = parseInt(btn.dataset.index);
+                    if (t === 'skill') state.profile.skills.splice(idx, 1);
+                    else if (t === 'tool') state.profile.tools.splice(idx, 1);
+                    saveState();
+                    renderProfile();
+                    showToast(`${t} removed`, 'fa-minus-circle');
+                });
+            });
+        }
+
+        function collectProfileFromUI() {
+            state.profile.name = profileName.value.trim();
+            state.profile.title = profileTitle.value.trim();
+            state.profile.summary = profileSummary.value.trim();
+            state.profile.experience = profileExperience.value.split('\n').filter(s => s.trim());
+            state.profile.education = profileEducation.value.split('\n').filter(s => s.trim());
+            // skills and tools are managed via add/remove
+            saveState();
+        }
+
+        // ===================================================================
+        //  MATCHING ENGINE
+        // ===================================================================
+        function extractKeywords(text) {
+            const words = text.toLowerCase()
+                .replace(/[^a-z0-9\s#+.]/g, ' ')
+                .split(/\s+/)
+                .filter(w => w.length > 1);
+            const stopWords = new Set(['the', 'and', 'for', 'with', 'that', 'this', 'from', 'have', 'are', 'was', 'were',
+                'will', 'your', 'you', 'our', 'their', 'they', 'can', 'has', 'had', 'been', 'not', 'but', 'what', 'all',
+                'when', 'who', 'which', 'about', 'such', 'would', 'should', 'could', 'may', 'might', 'etc', 'etc.'
+            ]);
+            return words.filter(w => !stopWords.has(w));
+        }
+
+        function matchLists(userList, jobText, threshold = 0.6) {
+            const jobWords = extractKeywords(jobText);
+            const matched = [];
+            const missing = [];
+
+            for (const item of userList) {
+                const itemLower = item.toLowerCase();
+                let found = false;
+                for (const word of jobWords) {
+                    if (word.includes(itemLower) || itemLower.includes(word)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    const parts = itemLower.split(/\s+/);
+                    let partMatch = 0;
+                    for (const part of parts) {
+                        if (part.length < 2) continue;
+                        for (const word of jobWords) {
+                            if (word.includes(part) || part.includes(word)) {
+                                partMatch++;
+                                break;
+                            }
+                        }
+                    }
+                    if (parts.length > 0 && (partMatch / parts.length) >= threshold) {
+                        found = true;
+                    }
+                }
+                if (found) matched.push(item);
+                else missing.push(item);
+            }
+
+            const userSet = new Set(userList.map(s => s.toLowerCase()));
+            const extraJobSkills = [];
+            for (const word of jobWords) {
+                if (word.length > 2 && !userSet.has(word)) {
+                    extraJobSkills.push(word);
+                }
+            }
+
+            return { matched, missing, extraJobSkills };
+        }
+
+        function analyzeMatch(jobText) {
+            const p = state.profile;
+            const allSkills = [...(p.skills || []), ...(p.tools || [])];
+
+            const skillResult = matchLists(p.skills || [], jobText);
+            const toolResult = matchLists(p.tools || [], jobText);
+
+            const expLines = p.experience || [];
+            const jobWords = extractKeywords(jobText);
+            let expMatchCount = 0;
+            for (const line of expLines) {
+                const lineLower = line.toLowerCase();
+                for (const word of jobWords) {
+                    if (lineLower.includes(word)) {
+                        expMatchCount++;
+                        break;
+                    }
+                }
+            }
+            const expFit = expLines.length > 0 ? Math.round((expMatchCount / expLines.length) * 100) : 0;
+
+            const totalSkills = allSkills.length;
+            const matchedSkillsCount = skillResult.matched.length + toolResult.matched.length;
+            const skillScore = totalSkills > 0 ? Math.round((matchedSkillsCount / totalSkills) * 100) : 0;
+            const overall = Math.round((skillScore * 0.6) + (expFit * 0.4));
+
+            return {
+                skillResult,
+                toolResult,
+                expFit,
+                skillScore,
+                overall,
+                matchedSkillsCount,
+                totalSkills,
+                jobWords,
+                expLines,
+            };
+        }
+
+        // ===================================================================
+        //  COVER LETTER GENERATOR (personalized for Monica)
+        // ===================================================================
+        function generateCoverLetter(jobText, matchResult) {
+            const p = state.profile;
+            const name = p.name || 'Monica Bernasconi';
+            const title = p.title || 'Intercultural Communication Specialist';
+            const summary = p.summary || 'Passionate about international communication and brand strategy.';
+
+            const matchedSkillsList = [...matchResult.skillResult.matched, ...matchResult.toolResult.matched];
+            const missingSkillsList = [...matchResult.skillResult.missing, ...matchResult.toolResult.missing];
+
+            const topSkills = matchedSkillsList.slice(0, 6).join(', ') || 'various relevant skills';
+            const expHighlights = matchResult.expLines.slice(0, 3).map(e => `• ${e}`).join('\n') || '• Extensive experience in international communication and project management.';
+
+            // Extract job title
+            let jobTitle = 'the position';
+            const titleMatch = jobText.match(/(?:title|position|role):\s*([^\n.]+)/i);
+            if (titleMatch) jobTitle = titleMatch[1].trim();
+            else {
+                const firstLine = jobText.split('\n').find(l => l.trim().length > 10);
+                if (firstLine) jobTitle = firstLine.trim().slice(0, 60);
+            }
+
+            const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Monica's unique philosophy and background
+            let letter = `[${date}]\n\n`;
+            letter += `Dear Hiring Team,\n\n`;
+            letter +=
+                `I am writing to express my strong interest in the ${jobTitle} role. As a ${title} with a deep passion for cross-cultural communication and strategic brand storytelling, I believe my diverse international experience and creative problem-solving approach align perfectly with your needs.\n\n`;
+            letter += `${summary}\n\n`;
+            letter += `My background spans institutional communication (European Parliament), community management (Seoul), and freelance brand strategy for clients across Italy and beyond. I thrive at the intersection of language, culture, and digital innovation—I don't just execute; I think strategically and build systems that are clear, human, and scalable.\n\n`;
+            letter += `Key qualifications include:\n${expHighlights}\n\n`;
+            letter += `My technical toolkit covers ${topSkills}`;
+            if (missingSkillsList.length > 0) {
+                letter +=
+                    `, and I am actively expanding my expertise in ${missingSkillsList.slice(0, 3).join(', ')} to stay ahead in the field.`;
+            } else {
+                letter += `. I am confident that my skills directly match your requirements.`;
+            }
+            letter += `\n\nI am particularly drawn to opportunities that challenge me intellectually and allow me to work in truly international, collaborative environments. I value mentorship and am eager to contribute to a team that shares a commitment to excellence and innovation.\n\n`;
+            letter += `Thank you for considering my application. I would welcome the opportunity to discuss how I can add value to your organization.\n\n`;
+            letter += `Sincerely,\n${name}`;
+
+            return letter;
+        }
+
+        // ===================================================================
+        //  RUN ANALYSIS
+        // ===================================================================
+        function runAnalysis() {
+            const jobText = jobDescription.value.trim();
+            if (!jobText) {
+                showToast('Please paste a job description first.', 'fa-exclamation-triangle');
+                return;
+            }
+
+            collectProfileFromUI();
+
+            const p = state.profile;
+            const allSkills = [...(p.skills || []), ...(p.tools || [])];
+            if (allSkills.length === 0) {
+                showToast('Add some skills and tools to your profile first!', 'fa-exclamation-triangle');
+                return;
+            }
+
+            const result = analyzeMatch(jobText);
+            state.lastAnalysis = { jobText, result, date: new Date().toISOString() };
+            saveState();
+
+            matchResults.classList.remove('hidden');
+            coverLetterSection.classList.remove('hidden');
+
+            const score = result.overall;
+            const level = getMatchLevel(score);
+            scoreCircle.textContent = score + '%';
+            scoreCircle.className = 'score-circle ' + level;
+
+            const total = result.totalSkills;
+            const matched = result.matchedSkillsCount;
+            skillsMatchedEl.textContent = `${matched} / ${total}`;
+            toolsMatchedEl.textContent = `${result.toolResult.matched.length} / ${result.toolResult.matched.length + result.toolResult.missing.length}`;
+            experienceFit.textContent = result.expFit + '%';
+            overallMatch.textContent = getMatchLabel(score) + ` (${score}%)`;
+
+            renderMatchTags(matchedSkillsContainer, result.skillResult.matched, 'match');
+            renderMatchTags(missingSkillsContainer, result.skillResult.missing, 'mismatch');
+            renderMatchTags(matchedToolsContainer, result.toolResult.matched, 'match');
+            renderMatchTags(missingToolsContainer, result.toolResult.missing, 'mismatch');
+
+            matchDateBadge.textContent = 'Analyzed ' + formatDateFull(new Date());
+
+            const letter = generateCoverLetter(jobText, result);
+            coverLetterBox.textContent = letter;
+
+            showToast(`Match score: ${score}% — ${getMatchLabel(score)}`, 'fa-chart-line');
+        }
+
+        function renderMatchTags(container, items, cls) {
+            if (!items || items.length === 0) {
+                container.innerHTML = `<span class="text-muted text-sm">None</span>`;
+                return;
+            }
+            container.innerHTML = items.map(item => `<span class="tag ${cls}">${escapeHtml(item)}</span>`).join('');
+        }
+
+        // ===================================================================
+        //  SAVE JOB TO HISTORY
+        // ===================================================================
+        function saveCurrentJobToHistory(status = 'not-applied') {
+            if (!state.lastAnalysis) {
+                showToast('No analysis to save. Run a match first.', 'fa-exclamation-triangle');
+                return;
+            }
+            const { jobText, result, date } = state.lastAnalysis;
+
+            let title = 'Untitled Job';
+            const titleMatch = jobText.match(/(?:title|position|role|job title):\s*([^\n.]+)/i);
+            if (titleMatch) title = titleMatch[1].trim();
+            else {
+                const firstLine = jobText.split('\n').find(l => l.trim().length > 10);
+                if (firstLine) title = firstLine.trim().slice(0, 50);
+            }
+
+            let company = 'Unknown Company';
+            const companyMatch = jobText.match(/(?:company|organization|firm|@):\s*([^\n.]+)/i);
+            if (companyMatch) company = companyMatch[1].trim();
+
+            const entry = {
+                id: generateId(),
+                jobTitle: title,
+                company: company,
+                description: jobText.slice(0, 500) + (jobText.length > 500 ? '...' : ''),
+                matchScore: result.overall,
+                skillsMatched: result.matchedSkillsCount,
+                toolsMatched: result.toolResult.matched.length,
+                coverLetter: coverLetterBox.textContent,
+                status: status,
+                date: date || new Date().toISOString(),
+            };
+
+            const existing = state.history.find(h => h.description === entry.description);
+            if (existing) {
+                Object.assign(existing, entry);
+                showToast('Job updated in history.', 'fa-sync');
+            } else {
+                state.history.unshift(entry);
+                showToast(`Saved "${title}" to history.`, 'fa-save');
+            }
+
+            saveState();
+            renderHistory();
+        }
+
+        // ===================================================================
+        //  RENDER: HISTORY
+        // ===================================================================
+        function renderHistory() {
+            const history = state.history || [];
+            if (history.length === 0) {
+                historyContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No jobs analyzed yet. Go to the <strong>Matcher</strong> tab and analyze a job to get started.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Job Title</th>
+                                <th>Company</th>
+                                <th>Match</th>
+                                <th>Skills</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            for (const job of history) {
+                const statusClass = job.status === 'applied' ? 'applied' :
+                    job.status === 'rejected' ? 'rejected' :
+                    job.status === 'interview' ? 'interview' : 'not-applied';
+                const statusLabel = job.status === 'applied' ? 'Applied' :
+                    job.status === 'rejected' ? 'Rejected' :
+                    job.status === 'interview' ? 'Interview' : 'Not Applied';
+
+                html += `
+                    <tr>
+                        <td class="job-title-cell" title="${escapeHtml(job.jobTitle)}">${escapeHtml(job.jobTitle)}</td>
+                        <td>${escapeHtml(job.company)}</td>
+                        <td><strong>${job.matchScore}%</strong></td>
+                        <td>${job.skillsMatched || 0}</td>
+                        <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
+                        <td style="font-size:12px;color:var(--text-muted)">${formatDate(job.date)}</td>
+                        <td class="job-actions-cell">
+                            <button class="btn btn-secondary btn-sm view-job-btn" data-id="${job.id}"><i class="fas fa-eye"></i></button>
+                            <button class="btn btn-secondary btn-sm delete-job-btn" data-id="${job.id}"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            html += `</tbody></table></div>`;
+            historyContainer.innerHTML = html;
+
+            historyContainer.querySelectorAll('.view-job-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    const job = state.history.find(h => h.id === id);
+                    if (job) {
+                        showToast(`📄 ${job.jobTitle} — ${job.matchScore}% match`, 'fa-file-alt');
+                        jobDescription.value = job.description;
+                        switchPage('matcher');
+                        setTimeout(() => runAnalysis(), 300);
+                    }
+                });
+            });
+
+            historyContainer.querySelectorAll('.delete-job-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.dataset.id;
+                    if (confirm('Delete this job from history?')) {
+                        state.history = state.history.filter(h => h.id !== id);
+                        saveState();
+                        renderHistory();
+                        showToast('Job removed from history.', 'fa-trash');
+                    }
+                });
+            });
+        }
+
+        // ===================================================================
+        //  NAVIGATION
+        // ===================================================================
+        function switchPage(pageId) {
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+            });
+            pages[pageId].classList.add('active');
+
+            navBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.page === pageId);
+            });
+
+            if (pageId === 'history') renderHistory();
+            if (pageId === 'profile') renderProfile();
+        }
+
+        // ===================================================================
+        //  EXPORT / IMPORT
+        // ===================================================================
+        function exportData() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `monica_jobmatch_${new Date().toISOString().slice(0,10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Data exported successfully!', 'fa-file-export');
+        }
+
+        function importData(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.profile && imported.history !== undefined) {
+                        state = imported;
+                        saveState();
+                        renderProfile();
+                        renderHistory();
+                        showToast('Data imported successfully!', 'fa-file-import');
+                    } else {
+                        showToast('Invalid data format.', 'fa-exclamation-triangle');
+                    }
+                } catch (err) {
+                    showToast('Error importing data: ' + err.message, 'fa-exclamation-triangle');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ===================================================================
+        //  INIT
+        // ===================================================================
+        function init() {
+            const loaded = loadState();
+            if (!loaded) {
+                resetToDefaults();
+            }
+
+            renderProfile();
+            renderHistory();
+
+            // -------- NAVIGATION --------
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchPage(btn.dataset.page);
+                });
+            });
+
+            // -------- PROFILE EVENTS --------
+            [profileName, profileTitle, profileSummary, profileExperience, profileEducation].forEach(el => {
+                el.addEventListener('input', () => {
+                    collectProfileFromUI();
+                });
+            });
+
+            addSkillBtn.addEventListener('click', () => {
+                const val = skillInput.value.trim();
+                if (val && !state.profile.skills.includes(val)) {
+                    state.profile.skills.push(val);
+                    saveState();
+                    renderProfile();
+                    skillInput.value = '';
+                    showToast(`Added skill: ${val}`, 'fa-plus-circle');
+                } else if (state.profile.skills.includes(val)) {
+                    showToast('Skill already exists.', 'fa-info-circle');
+                }
+            });
+            skillInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addSkillBtn.click(); });
+
+            addToolBtn.addEventListener('click', () => {
+                const val = toolInput.value.trim();
+                if (val && !state.profile.tools.includes(val)) {
+                    state.profile.tools.push(val);
+                    saveState();
+                    renderProfile();
+                    toolInput.value = '';
+                    showToast(`Added tool: ${val}`, 'fa-plus-circle');
+                } else if (state.profile.tools.includes(val)) {
+                    showToast('Tool already exists.', 'fa-info-circle');
+                }
+            });
+            toolInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addToolBtn.click(); });
+
+            // -------- MATCHER EVENTS --------
+            analyzeBtn.addEventListener('click', runAnalysis);
+
+            clearJobBtn.addEventListener('click', () => {
+                jobDescription.value = '';
+                matchResults.classList.add('hidden');
+                coverLetterSection.classList.add('hidden');
+                state.lastAnalysis = null;
+                saveState();
+                showToast('Cleared job description.', 'fa-undo');
+            });
+
+            copyLetterBtn.addEventListener('click', () => {
+                const text = coverLetterBox.textContent;
+                if (text && !text.includes('tailored cover letter will appear here')) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        showToast('Cover letter copied to clipboard!', 'fa-copy');
+                    }).catch(() => {
+                        const area = document.createElement('textarea');
+                        area.value = text;
+                        document.body.appendChild(area);
+                        area.select();
+                        document.execCommand('copy');
+                        area.remove();
+                        showToast('Cover letter copied!', 'fa-copy');
+                    });
+                } else {
+                    showToast('Generate a cover letter first.', 'fa-info-circle');
+                }
+            });
+
+            saveJobBtn.addEventListener('click', () => saveCurrentJobToHistory('not-applied'));
+
+            regenerateLetterBtn.addEventListener('click', () => {
+                if (state.lastAnalysis) {
+                    const letter = generateCoverLetter(state.lastAnalysis.jobText, state.lastAnalysis.result);
+                    coverLetterBox.textContent = letter;
+                    showToast('Cover letter regenerated.', 'fa-sync');
+                } else {
+                    showToast('Run an analysis first.', 'fa-info-circle');
+                }
+            });
+
+            markAppliedBtn.addEventListener('click', () => {
+                if (state.lastAnalysis) {
+                    saveCurrentJobToHistory('applied');
+                    renderHistory();
+                } else {
+                    showToast('Run an analysis first.', 'fa-info-circle');
+                }
+            });
+
+            markNotAppliedBtn.addEventListener('click', () => {
+                if (state.lastAnalysis) {
+                    saveCurrentJobToHistory('not-applied');
+                    renderHistory();
+                } else {
+                    showToast('Run an analysis first.', 'fa-info-circle');
+                }
+            });
+
+            // -------- HISTORY EVENTS --------
+            clearHistoryBtn.addEventListener('click', () => {
+                if (state.history.length === 0) {
+                    showToast('History is already empty.', 'fa-info-circle');
+                    return;
+                }
+                if (confirm('Delete all job history?')) {
+                    state.history = [];
+                    saveState();
+                    renderHistory();
+                    showToast('History cleared.', 'fa-trash');
+                }
+            });
+
+            // -------- EXPORT / IMPORT --------
+            exportDataBtn.addEventListener('click', exportData);
+
+            importDataBtn.addEventListener('click', () => {
+                importFileInput.click();
+            });
+
+            importFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    importData(file);
+                }
+                importFileInput.value = '';
+            });
+
+            // -------- KEYBOARD SHORTCUT: Ctrl+Enter --------
+            jobDescription.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    e.preventDefault();
+                    analyzeBtn.click();
+                }
+            });
+
+            // -------- AUTO-SAVE PROFILE --------
+            setInterval(collectProfileFromUI, 2000);
+
+            showToast('🚀 Monica\'s Job Match ready — paste a job and hit Analyze!', 'fa-rocket');
+        }
+
+        // ===================================================================
+        //  START
+        // ===================================================================
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
