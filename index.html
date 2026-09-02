@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Monica's Job Match — Personal Career Assistant</title>
+    <title>Monica's Job Match — Narrative & Analytics</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
@@ -142,7 +142,6 @@
             font-size: 14px;
         }
 
-        /* ---------- SECTION PAGES ---------- */
         .page {
             display: none;
             animation: fadeIn 0.35s ease;
@@ -162,7 +161,6 @@
             }
         }
 
-        /* ---------- CARDS ---------- */
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -204,7 +202,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ---------- FORM ELEMENTS ---------- */
         label {
             display: block;
             font-size: 13px;
@@ -312,7 +309,38 @@
             color: var(--text-primary);
         }
 
-        /* ---------- TAGS / SKILLS ---------- */
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-input);
+            padding: 4px;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            width: fit-content;
+        }
+        .toggle-group label {
+            margin: 0;
+            padding: 6px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            background: transparent;
+        }
+        .toggle-group input[type="radio"] {
+            display: none;
+        }
+        .toggle-group input[type="radio"]:checked+label {
+            background: var(--accent-cyan);
+            color: #0b0e14;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+        .toggle-group label:hover {
+            color: var(--text-primary);
+        }
+
         .tags-container {
             display: flex;
             flex-wrap: wrap;
@@ -374,7 +402,6 @@
             white-space: nowrap;
         }
 
-        /* ---------- MATCH RESULTS ---------- */
         .match-score {
             display: flex;
             align-items: center;
@@ -437,7 +464,6 @@
             color: var(--accent-red);
         }
 
-        /* ---------- COVER LETTER ---------- */
         .cover-letter-box {
             background: var(--bg-input);
             border: 1px solid var(--border-color);
@@ -457,7 +483,57 @@
             font-style: italic;
         }
 
-        /* ---------- JOB HISTORY TABLE ---------- */
+        /* ---------- NARRATIVE / ANALYTICS SPECIFIC STYLES ---------- */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .analytics-card {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px 24px;
+            text-align: center;
+        }
+        .analytics-card .number {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+        .analytics-card .label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .analytics-card .sub {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .role-explanation {
+            border-left: 3px solid var(--accent-cyan);
+            padding-left: 16px;
+            margin-bottom: 16px;
+        }
+        .role-explanation h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .role-explanation .meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+        .role-explanation p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
         .table-wrap {
             overflow-x: auto;
             border-radius: 8px;
@@ -525,7 +601,6 @@
             flex-wrap: wrap;
         }
 
-        /* ---------- EMPTY STATE ---------- */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -541,7 +616,6 @@
             font-size: 15px;
         }
 
-        /* ---------- RESPONSIVE ---------- */
         @media (max-width: 768px) {
             .app-header {
                 flex-direction: column;
@@ -578,6 +652,17 @@
             .job-actions-cell {
                 flex-direction: column;
             }
+            .toggle-group {
+                width: 100%;
+                justify-content: stretch;
+            }
+            .toggle-group label {
+                flex: 1;
+                text-align: center;
+            }
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -600,7 +685,6 @@
             }
         }
 
-        /* ---------- UTILITY ---------- */
         .mt-8 {
             margin-top: 8px;
         }
@@ -651,7 +735,6 @@
             animation: fadeIn 0.3s ease;
         }
 
-        /* ---------- TOAST ---------- */
         .toast-container {
             position: fixed;
             bottom: 30px;
@@ -713,19 +796,20 @@
         <header class="app-header">
             <div class="logo">
                 <i class="fas fa-user-circle"></i>
-                <h1>Monica's Job Match <span>v2.0</span></h1>
+                <h1>Monica's Job Match <span>v2.2</span></h1>
             </div>
             <div class="header-actions" id="navButtons">
-                <button class="active" data-page="profile"><i class="fas fa-id-badge"></i> Profile</button>
+                <button data-page="profile"><i class="fas fa-id-badge"></i> Profile</button>
                 <button data-page="matcher"><i class="fas fa-search"></i> Matcher</button>
                 <button data-page="history"><i class="fas fa-history"></i> History</button>
+                <button class="active" data-page="narrative"><i class="fas fa-book-open"></i> Narrative</button>
                 <button id="exportDataBtn" title="Export all data as JSON"><i class="fas fa-file-export"></i> Export</button>
                 <button id="importDataBtn" title="Import data from JSON"><i class="fas fa-file-import"></i> Import</button>
             </div>
         </header>
 
         <!-- ========== PAGE: PROFILE ========== -->
-        <section id="page-profile" class="page active">
+        <section id="page-profile" class="page">
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-user"></i> Personal Profile</h2>
@@ -747,7 +831,6 @@
                 </div>
             </div>
 
-            <!-- Skills -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-code"></i> Skills</h2>
@@ -759,7 +842,6 @@
                 </div>
             </div>
 
-            <!-- Tools -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-tools"></i> Tools &amp; Technologies</h2>
@@ -771,7 +853,6 @@
                 </div>
             </div>
 
-            <!-- Experience -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-briefcase"></i> Experience</h2>
@@ -782,7 +863,6 @@
                 </div>
             </div>
 
-            <!-- Education -->
             <div class="card">
                 <div class="card-header">
                     <h2><i class="fas fa-graduation-cap"></i> Education & Languages</h2>
@@ -811,7 +891,6 @@
                 </div>
             </div>
 
-            <!-- Match Results -->
             <div id="matchResults" class="card hidden">
                 <div class="card-header">
                     <h2><i class="fas fa-chart-pie"></i> Match Analysis</h2>
@@ -844,22 +923,27 @@
                 </div>
             </div>
 
-            <!-- Cover Letter -->
             <div id="coverLetterSection" class="card hidden">
                 <div class="card-header">
-                    <h2><i class="fas fa-envelope"></i> Tailored Cover Letter</h2>
-                    <div>
+                    <h2><i class="fas fa-envelope"></i> <span id="letterTypeLabel">Cover Letter</span></h2>
+                    <div class="flex gap-8">
+                        <div class="toggle-group" id="formatToggle">
+                            <input type="radio" name="letterFormat" id="formatCover" value="cover" checked />
+                            <label for="formatCover"><i class="fas fa-file-alt"></i> Cover Letter</label>
+                            <input type="radio" name="letterFormat" id="formatEmail" value="email" />
+                            <label for="formatEmail"><i class="fas fa-at"></i> Email</label>
+                        </div>
                         <button class="btn btn-secondary btn-sm" id="copyLetterBtn"><i class="fas fa-copy"></i> Copy</button>
-                        <button class="btn btn-success btn-sm" id="saveJobBtn"><i class="fas fa-check"></i> Save to History</button>
+                        <button class="btn btn-success btn-sm" id="saveJobBtn"><i class="fas fa-check"></i> Save</button>
                     </div>
                 </div>
                 <div class="cover-letter-box" id="coverLetterBox">
-                    <span class="letter-placeholder">Your tailored cover letter will appear here after analysis.</span>
+                    <span class="letter-placeholder">Your tailored message will appear here after analysis.</span>
                 </div>
                 <div class="mt-8 flex gap-8" id="letterActions">
                     <button class="btn btn-secondary btn-sm" id="regenerateLetterBtn"><i class="fas fa-sync"></i> Regenerate</button>
-                    <button class="btn btn-secondary btn-sm" id="markAppliedBtn"><i class="fas fa-check-circle"></i> Mark as Applied</button>
-                    <button class="btn btn-secondary btn-sm" id="markNotAppliedBtn"><i class="fas fa-times-circle"></i> Mark as Not Applied</button>
+                    <button class="btn btn-secondary btn-sm" id="markAppliedBtn"><i class="fas fa-check-circle"></i> Mark Applied</button>
+                    <button class="btn btn-secondary btn-sm" id="markNotAppliedBtn"><i class="fas fa-times-circle"></i> Mark Not Applied</button>
                 </div>
             </div>
         </section>
@@ -882,7 +966,117 @@
             </div>
         </section>
 
-        <!-- ========== HIDDEN FILE INPUT FOR IMPORT ========== -->
+        <!-- ========== PAGE: NARRATIVE & ANALYTICS ========== -->
+        <section id="page-narrative" class="page active">
+            <!-- Analytics Dashboard -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-simple"></i> Experience Analytics</h2>
+                    <span class="badge"><i class="fas fa-calculator"></i> Cumulative (overlapping)</span>
+                </div>
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <div class="number">10 yrs 10 mo</div>
+                        <div class="label"><i class="fas fa-bullhorn" style="margin-right:6px;"></i> Communication</div>
+                        <div class="sub">Writing, PR, Social Media, Institutional Comms, Marketing, Community</div>
+                    </div>
+                    <div class="analytics-card">
+                        <div class="number">3 yrs 8 mo</div>
+                        <div class="label"><i class="fas fa-paint-brush" style="margin-right:6px;"></i> Graphic Design</div>
+                        <div class="sub">Visual Identity, Packaging, Layout, Creative Direction, Canva/Figma</div>
+                    </div>
+                </div>
+                <div class="mt-8 text-sm text-muted" style="text-align:center;">
+                    <i class="fas fa-info-circle"></i> Based on your professional roles since 2017. Overlapping freelance &amp; institutional work is counted cumulatively.
+                </div>
+            </div>
+
+            <!-- Field Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-layer-group"></i> Field Overview</h2>
+                </div>
+                <div class="role-explanation">
+                    <h3>Communication &amp; Brand Strategy <span style="font-weight:400;color:var(--text-muted);font-size:14px;">(10+ years)</span></h3>
+                    <p>You excel at translating complex ideas into clear, compelling narratives across institutional, commercial, and cultural contexts. Your experience spans European-level institutional communication (EU Parliament), grassroots social media growth (Il Polo Positivo), bilingual editorial production (Cactus Magazine, Restaurant Magazine), and full-stack brand strategy (HanaBee). You don't just write—you architect communication systems that bridge languages and cultures.</p>
+                </div>
+                <div class="role-explanation" style="border-left-color: var(--accent-green);">
+                    <h3>Graphic Design &amp; Creative Direction <span style="font-weight:400;color:var(--text-muted);font-size:14px;">(3.5+ years)</span></h3>
+                    <p>Your design work is commercially grounded and strategically driven. You have built complete visual identities from scratch (HanaBee packaging, brand guidelines), designed bilingual print magazines, created digital posters, and collaborated with art directors on editorial layouts. While self-taught in Canva and Figma, your work is consistently praised for its clarity and brand coherence—proving you combine aesthetic sensibility with strategic business thinking.</p>
+                </div>
+            </div>
+
+            <!-- Role Deep-Dives -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-briefcase"></i> Role Explanations</h2>
+                    <span class="badge">Interview Prep</span>
+                </div>
+
+                <div class="role-explanation">
+                    <h3>European Parliament — Communication Trainee <span class="text-muted">(Oct 2024 – Mar 2025)</span></h3>
+                    <p><strong>How it relates:</strong> I contributed to the EU’s institutional communication strategy, managing website content, social media presence, and copyright compliance for multilingual publications. My UI/UX consultancy for the IATE 3 database was fully implemented—demonstrating my ability to translate user needs into tangible product improvements. I also automated Excel workflows and designed a file management system, showing that I combine communication strategy with operational efficiency.</p>
+                </div>
+
+                <div class="role-explanation">
+                    <h3>Langsyoung — Marketing &amp; Community Manager <span class="text-muted">(Nov 2025 – May 2026)</span></h3>
+                    <p><strong>How it relates:</strong> In Seoul, I managed a language cafe's community, handled participant relations, created digital content, and designed debating sessions. I identified a friction point between learning materials and real conversation—so I built a custom HTML/CSS/JS flashcard system. This role directly applies my linguistic training (EN/ES/KO) to real-world community building, cross-cultural mediation, and operational problem-solving.</p>
+                </div>
+
+                <div class="role-explanation">
+                    <h3>Freelance Creative Director &amp; Brand Strategist <span class="text-muted">(2023 – present)</span></h3>
+                    <p><strong>How it relates:</strong> I work with clients end-to-end: from naming and visual identity (HanaBee honey) to bilingual magazine production and SEO copywriting. This demonstrates my ability to manage projects independently, deliver tangible business outcomes (e.g., increased brand recognition), and adapt my communication style to different industries—from food &amp; wellness to hospitality and publishing.</p>
+                </div>
+
+                <div class="role-explanation">
+                    <h3>Il Polo Positivo — Social Media Team Leader <span class="text-muted">(2017 – 2023)</span></h3>
+                    <p><strong>How it relates:</strong> I grew an Instagram page from 0 to nearly 4,000 followers through strategic content planning and editorial calendar management. I led a team, collaborated with a graphic designer, and maintained a consistent brand voice. This foundational experience taught me how to build an engaged community and measure impact—skills I've carried into every subsequent role.</p>
+                </div>
+            </div>
+
+            <!-- Education Relevance -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-graduation-cap"></i> Education Relevance</h2>
+                </div>
+                <div class="role-explanation" style="border-left-color: var(--accent-amber);">
+                    <h3>Master's in International Communication <span class="text-muted">(UniMi, 2021-2023)</span></h3>
+                    <p><strong>How it relates to work:</strong> My thesis on <em>Korean Pop Culture Media Analysis</em> examined how media narratives construct national images—directly applicable to brand storytelling, PR, and international marketing. The programme covered business communication, intercultural mediation, and generative AI, giving me a strong theoretical foundation for every practical role I've taken on.</p>
+                </div>
+                <div class="role-explanation" style="border-left-color: var(--accent-amber);">
+                    <h3>Bachelor's in Interlingual Mediation <span class="text-muted">(UniGe, 2018-2021)</span></h3>
+                    <p><strong>How it relates to work:</strong> I studied translation (EN/IT/ES) and intercultural communication, with a mandatory Erasmus semester in Stockholm. This taught me linguistic precision, cultural sensitivity, and the ability to mediate between different worldviews—essential for any role involving international stakeholders or multilingual content.</p>
+                </div>
+                <div class="role-explanation" style="border-left-color: var(--accent-amber);">
+                    <h3>Digital Marketing Specialization <span class="text-muted">(FORMAPER, 2023-2024)</span></h3>
+                    <p><strong>How it relates to work:</strong> This course bridged my creative background with measurable business metrics—covering SEO, social media advertising, and sustainability communication. It's the reason I approach brand strategy with both a creative eye and a data-driven mindset.</p>
+                </div>
+            </div>
+
+            <!-- Skills Translation -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-exchange-alt"></i> Skills Translation</h2>
+                    <span class="badge">For job applications</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Your Skill</th><th>What it means to an employer</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>UI/UX Consultancy</strong> (IATE 3)</td><td>I listen to users, identify pain points, and propose solutions that get implemented. I bridge the gap between technical teams and end-users.</td></tr>
+                            <tr><td><strong>Institutional Communication</strong> (EU Parliament)</td><td>I can navigate complex bureaucratic environments, ensure regulatory compliance, and communicate clearly to diverse, multilingual audiences.</td></tr>
+                            <tr><td><strong>Cross-Cultural Mediation</strong></td><td>With C2 English, C1 Spanish, and B1 Korean, I de-escalate conflicts, foster inclusivity, and build trust across cultural boundaries.</td></tr>
+                            <tr><td><strong>Excel Automation &amp; Process Design</strong></td><td>I don't just do administrative work—I make it efficient. I build systems that save teams 70%+ of manual time.</td></tr>
+                            <tr><td><strong>Brand Storytelling</strong></td><td>I turn abstract concepts into cohesive, memorable brand identities that resonate with target audiences.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== HIDDEN FILE INPUT ========== -->
         <input type="file" id="importFileInput" accept=".json" style="display:none" />
     </div>
 
@@ -891,9 +1085,9 @@
 
     <script>
         // ===================================================================
-        //  STATE — pre-populated with Monica's complete profile
+        //  STATE
         // ===================================================================
-        const STATE_KEY = 'jobmatch_state_monica';
+        const STATE_KEY = 'jobmatch_state_monica_v2';
 
         const defaultState = {
             profile: {
@@ -967,6 +1161,7 @@
             profile: $('#page-profile'),
             matcher: $('#page-matcher'),
             history: $('#page-history'),
+            narrative: $('#page-narrative')
         };
 
         const navBtns = $$('#navButtons button[data-page]');
@@ -1004,6 +1199,9 @@
         const regenerateLetterBtn = $('#regenerateLetterBtn');
         const markAppliedBtn = $('#markAppliedBtn');
         const markNotAppliedBtn = $('#markNotAppliedBtn');
+        const letterTypeLabel = $('#letterTypeLabel');
+        const formatCover = $('#formatCover');
+        const formatEmail = $('#formatEmail');
 
         const historyContainer = $('#historyContainer');
         const clearHistoryBtn = $('#clearHistoryBtn');
@@ -1074,7 +1272,6 @@
                 const raw = localStorage.getItem(STATE_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    // Ensure all fields exist
                     if (parsed.profile && parsed.history !== undefined) {
                         state = parsed;
                         return true;
@@ -1131,7 +1328,6 @@
             state.profile.summary = profileSummary.value.trim();
             state.profile.experience = profileExperience.value.split('\n').filter(s => s.trim());
             state.profile.education = profileEducation.value.split('\n').filter(s => s.trim());
-            // skills and tools are managed via add/remove
             saveState();
         }
 
@@ -1234,10 +1430,7 @@
             };
         }
 
-        // ===================================================================
-        //  COVER LETTER GENERATOR (personalized for Monica)
-        // ===================================================================
-        function generateCoverLetter(jobText, matchResult) {
+        function generateMessage(jobText, matchResult, format = 'cover') {
             const p = state.profile;
             const name = p.name || 'Monica Bernasconi';
             const title = p.title || 'Intercultural Communication Specialist';
@@ -1249,7 +1442,6 @@
             const topSkills = matchedSkillsList.slice(0, 6).join(', ') || 'various relevant skills';
             const expHighlights = matchResult.expLines.slice(0, 3).map(e => `• ${e}`).join('\n') || '• Extensive experience in international communication and project management.';
 
-            // Extract job title
             let jobTitle = 'the position';
             const titleMatch = jobText.match(/(?:title|position|role):\s*([^\n.]+)/i);
             if (titleMatch) jobTitle = titleMatch[1].trim();
@@ -1258,33 +1450,39 @@
                 if (firstLine) jobTitle = firstLine.trim().slice(0, 60);
             }
 
+            let company = 'your organization';
+            const companyMatch = jobText.match(/(?:company|organization|firm|@):\s*([^\n.]+)/i);
+            if (companyMatch) company = companyMatch[1].trim();
+
             const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Monica's unique philosophy and background
-            let letter = `[${date}]\n\n`;
-            letter += `Dear Hiring Team,\n\n`;
-            letter +=
-                `I am writing to express my strong interest in the ${jobTitle} role. As a ${title} with a deep passion for cross-cultural communication and strategic brand storytelling, I believe my diverse international experience and creative problem-solving approach align perfectly with your needs.\n\n`;
-            letter += `${summary}\n\n`;
-            letter += `My background spans institutional communication (European Parliament), community management (Seoul), and freelance brand strategy for clients across Italy and beyond. I thrive at the intersection of language, culture, and digital innovation—I don't just execute; I think strategically and build systems that are clear, human, and scalable.\n\n`;
-            letter += `Key qualifications include:\n${expHighlights}\n\n`;
-            letter += `My technical toolkit covers ${topSkills}`;
-            if (missingSkillsList.length > 0) {
-                letter +=
-                    `, and I am actively expanding my expertise in ${missingSkillsList.slice(0, 3).join(', ')} to stay ahead in the field.`;
-            } else {
-                letter += `. I am confident that my skills directly match your requirements.`;
-            }
-            letter += `\n\nI am particularly drawn to opportunities that challenge me intellectually and allow me to work in truly international, collaborative environments. I value mentorship and am eager to contribute to a team that shares a commitment to excellence and innovation.\n\n`;
-            letter += `Thank you for considering my application. I would welcome the opportunity to discuss how I can add value to your organization.\n\n`;
-            letter += `Sincerely,\n${name}`;
+            const intro = format === 'email' ?
+                `I am writing to express my strong interest in the ${jobTitle} role at ${company}.` :
+                `I am writing to express my strong interest in the ${jobTitle} role. As a ${title} with a deep passion for cross-cultural communication and strategic brand storytelling, I believe my diverse international experience and creative problem-solving approach align perfectly with your needs.`;
 
-            return letter;
+            const body = format === 'email' ?
+                `My background spans institutional communication (European Parliament), community management (Seoul), and freelance brand strategy for clients across Italy and beyond. I thrive at the intersection of language, culture, and digital innovation—I don't just execute; I think strategically and build systems that are clear, human, and scalable.\n\nKey qualifications include:\n${expHighlights}\n\nMy technical toolkit covers ${topSkills}` :
+                `${summary}\n\nMy background spans institutional communication (European Parliament), community management (Seoul), and freelance brand strategy for clients across Italy and beyond. I thrive at the intersection of language, culture, and digital innovation—I don't just execute; I think strategically and build systems that are clear, human, and scalable.\n\nKey qualifications include:\n${expHighlights}\n\nMy technical toolkit covers ${topSkills}`;
+
+            const missingNote = missingSkillsList.length > 0 ?
+                `, and I am actively expanding my expertise in ${missingSkillsList.slice(0, 3).join(', ')} to stay ahead in the field.` :
+                `. I am confident that my skills directly match your requirements.`;
+
+            const closing = format === 'email' ?
+                `\n\nI would welcome the opportunity to discuss how I can contribute to ${company}. Please feel free to contact me at your earliest convenience.\n\nSincerely,\n${name}` :
+                `\n\nI am particularly drawn to opportunities that challenge me intellectually and allow me to work in truly international, collaborative environments. I value mentorship and am eager to contribute to a team that shares a commitment to excellence and innovation.\n\nThank you for considering my application. I would welcome the opportunity to discuss how I can add value to your organization.\n\nSincerely,\n${name}`;
+
+            let message = '';
+            if (format === 'email') {
+                const subject = `Application for ${jobTitle} - ${name}`;
+                message = `Subject: ${subject}\n\n${intro}\n\n${body}${missingNote}${closing}`;
+            } else {
+                message = `[${date}]\n\nDear Hiring Team,\n\n${intro}\n\n${body}${missingNote}${closing}`;
+            }
+
+            return message;
         }
 
-        // ===================================================================
-        //  RUN ANALYSIS
-        // ===================================================================
         function runAnalysis() {
             const jobText = jobDescription.value.trim();
             if (!jobText) {
@@ -1327,10 +1525,17 @@
 
             matchDateBadge.textContent = 'Analyzed ' + formatDateFull(new Date());
 
-            const letter = generateCoverLetter(jobText, result);
-            coverLetterBox.textContent = letter;
+            updateMessage();
 
             showToast(`Match score: ${score}% — ${getMatchLabel(score)}`, 'fa-chart-line');
+        }
+
+        function updateMessage() {
+            if (!state.lastAnalysis) return;
+            const format = formatCover.checked ? 'cover' : 'email';
+            const message = generateMessage(state.lastAnalysis.jobText, state.lastAnalysis.result, format);
+            coverLetterBox.textContent = message;
+            letterTypeLabel.textContent = format === 'cover' ? 'Cover Letter' : 'Email';
         }
 
         function renderMatchTags(container, items, cls) {
@@ -1481,7 +1686,7 @@
             Object.keys(pages).forEach(key => {
                 pages[key].classList.remove('active');
             });
-            pages[pageId].classList.add('active');
+            if (pages[pageId]) pages[pageId].classList.add('active');
 
             navBtns.forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.page === pageId);
@@ -1539,14 +1744,12 @@
             renderProfile();
             renderHistory();
 
-            // -------- NAVIGATION --------
             navBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     switchPage(btn.dataset.page);
                 });
             });
 
-            // -------- PROFILE EVENTS --------
             [profileName, profileTitle, profileSummary, profileExperience, profileEducation].forEach(el => {
                 el.addEventListener('input', () => {
                     collectProfileFromUI();
@@ -1581,7 +1784,6 @@
             });
             toolInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') addToolBtn.click(); });
 
-            // -------- MATCHER EVENTS --------
             analyzeBtn.addEventListener('click', runAnalysis);
 
             clearJobBtn.addEventListener('click', () => {
@@ -1595,9 +1797,9 @@
 
             copyLetterBtn.addEventListener('click', () => {
                 const text = coverLetterBox.textContent;
-                if (text && !text.includes('tailored cover letter will appear here')) {
+                if (text && !text.includes('Your tailored message will appear here')) {
                     navigator.clipboard.writeText(text).then(() => {
-                        showToast('Cover letter copied to clipboard!', 'fa-copy');
+                        showToast('Copied to clipboard!', 'fa-copy');
                     }).catch(() => {
                         const area = document.createElement('textarea');
                         area.value = text;
@@ -1605,10 +1807,10 @@
                         area.select();
                         document.execCommand('copy');
                         area.remove();
-                        showToast('Cover letter copied!', 'fa-copy');
+                        showToast('Copied!', 'fa-copy');
                     });
                 } else {
-                    showToast('Generate a cover letter first.', 'fa-info-circle');
+                    showToast('Generate a message first.', 'fa-info-circle');
                 }
             });
 
@@ -1616,12 +1818,18 @@
 
             regenerateLetterBtn.addEventListener('click', () => {
                 if (state.lastAnalysis) {
-                    const letter = generateCoverLetter(state.lastAnalysis.jobText, state.lastAnalysis.result);
-                    coverLetterBox.textContent = letter;
-                    showToast('Cover letter regenerated.', 'fa-sync');
+                    updateMessage();
+                    showToast('Message regenerated.', 'fa-sync');
                 } else {
                     showToast('Run an analysis first.', 'fa-info-circle');
                 }
+            });
+
+            formatCover.addEventListener('change', () => {
+                if (state.lastAnalysis) updateMessage();
+            });
+            formatEmail.addEventListener('change', () => {
+                if (state.lastAnalysis) updateMessage();
             });
 
             markAppliedBtn.addEventListener('click', () => {
@@ -1642,7 +1850,6 @@
                 }
             });
 
-            // -------- HISTORY EVENTS --------
             clearHistoryBtn.addEventListener('click', () => {
                 if (state.history.length === 0) {
                     showToast('History is already empty.', 'fa-info-circle');
@@ -1656,7 +1863,6 @@
                 }
             });
 
-            // -------- EXPORT / IMPORT --------
             exportDataBtn.addEventListener('click', exportData);
 
             importDataBtn.addEventListener('click', () => {
@@ -1671,7 +1877,6 @@
                 importFileInput.value = '';
             });
 
-            // -------- KEYBOARD SHORTCUT: Ctrl+Enter --------
             jobDescription.addEventListener('keydown', (e) => {
                 if (e.ctrlKey && e.key === 'Enter') {
                     e.preventDefault();
@@ -1679,15 +1884,20 @@
                 }
             });
 
-            // -------- AUTO-SAVE PROFILE --------
             setInterval(collectProfileFromUI, 2000);
 
-            showToast('🚀 Monica\'s Job Match ready — paste a job and hit Analyze!', 'fa-rocket');
+            // Default to Narrative tab if no active page (since we set it active in HTML)
+            // But ensure navigation reflects it
+            const activePage = document.querySelector('.page.active');
+            if (activePage && activePage.id === 'page-narrative') {
+                navBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.page === 'narrative');
+                });
+            }
+
+            showToast('🚀 Narrative & Analytics tab added!', 'fa-book-open');
         }
 
-        // ===================================================================
-        //  START
-        // ===================================================================
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
